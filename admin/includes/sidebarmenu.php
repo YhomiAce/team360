@@ -60,19 +60,19 @@
       </li>
       <li class="treeview">
         <a href="#">
-          <i class="fa fa-folder"></i> <span style="font-family: verdana; font-size: 13px; font-weight: normal;">ADMIN USERS</span>
+          <i class="fa fa-folder"></i> <span style="font-family: verdana; font-size: 13px; font-weight: normal;">Admin Users</span>
           <span class="pull-right-container">
             <i class="fa fa-angle-right pull-right"></i>
           </span>
         </a>
         <ul class="treeview-menu">
-          <li style="font-family: verdana; font-size: 14px; font-weight: normal;"><a href="?p=admin_users" style="font-size: 13px;"><i class="fa fa-circle-o"></i>ADMIN USERS</a></li>
+          <li style="font-family: verdana; font-size: 14px; font-weight: normal;"><a href="?p=admin_users" style="font-size: 13px;"><i class="fa fa-circle-o"></i>Admin Users</a></li>
         </ul>
 
       </li>
       <li class="treeview">
         <a href="logout.php">
-          <i class="fa fa-laptop"></i> <span class="text-orange-600" style="font-family: verdana; font-size: 13px; font-weight: normal;">LOGOUT</>
+          <i class="fa fa-laptop"></i> <span class="text-orange-600" style="font-family: verdana; font-size: 13px; font-weight: normal;">Logout</>
         </a>
       </li>
     </ul>
