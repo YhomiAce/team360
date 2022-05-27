@@ -4,7 +4,7 @@
           require_once 'config/actions.php';
           require_once 'config/conn.php';
           $email = $_SESSION['user'];
-          echo $email;
+          // echo $email;
 
 
 ?>
@@ -21,12 +21,12 @@
           
           $user = currentUserByEmail($conn, $email);
           $userId = $user['id'];
-          echo $userId;
+          // echo $userId;
         $investments = allInvestment($conn, $userId);
        $activeInvestment = activeInvestment($conn, $userId);
 
         // $totalDeposit = getTotalDeposit($conn, $userId);
-        $investedAmount = getAllUserInvestment($conn, $userId);
+        // $investedAmount = getAllUserInvestment($conn, $userId);
         
         function formatMoney($money){
           if($money >= 50000 && $money < 1000000)
