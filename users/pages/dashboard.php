@@ -1,3 +1,11 @@
+<?php
+          error_reporting(E_ALL);
+          ini_set('display_errors', 1);
+          require_once 'config/actions.php';
+          require_once 'pages/config/conn.php';
+
+
+?>
 <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -7,18 +15,16 @@
     <div class="w-full pt-16">
       <!-- Main content -->
       <?php
-          error_reporting(E_ALL);
-          ini_set('display_errors', 1);
-          require_once '../users/config/actions.php';
-          require_once 'config/conn.php';
+          
           $email = $_SESSION['user'];
           $user = currentUser($conn, $email);
           $userId = $user['id'];
         $investments = allInvestment($conn, $userId);
        $activeInvestment = activeInvestment($conn, $userId);
 
-        $totalDeposit = getTotalDeposit($conn, $userId);
-
+        // $totalDeposit = getTotalDeposit($conn, $userId);
+        $investedAmount = getAllUserInvestment($conn, $userId);
+        
         function formatMoney($money){
           if($money >= 50000 && $money < 1000000)
             {
@@ -37,6 +43,8 @@
             return $money;
           }   
       }
+      print_r($investedAmount);
+
     ?>
 
     

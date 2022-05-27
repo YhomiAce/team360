@@ -60,6 +60,14 @@
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
             return $result;
         }
+        function getAllUserInvestment($conn, $userId)
+        {
+            $sql = "SELECT amount FROM investment WHERE userId =?";
+            $stmt = $conn->prepare($sql);
+            $stmt->execute(['userId'=>$userId]);
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $result;
+        }
     // editUser
     function editUser($conn,$name,$password,$id)
     {
@@ -283,6 +291,3 @@ function MyMailer($subject,$to,$message){
     }
 
 }
-
-    
-?>
