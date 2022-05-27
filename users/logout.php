@@ -2,6 +2,6 @@
 session_start();
 session_destroy();
 session_unset();
-header("location:../users/?p=dashboard");
+header("location:../users");
 exit;
 ?>

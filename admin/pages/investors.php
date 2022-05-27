@@ -40,7 +40,7 @@ $rows = noOfActiveInvestors($conn);
           <!-- small box -->
         
          <h4 style="color: green; font-weight: bold;"></h4>
-          <div style="dborder: solid; border-width: thin; border-color: #ccc; margin-top: 0px; padding: 1.5em; dheight: 500px; ">
+          <div style="border: solid; border-width: thin; border-color: #ccc; margin-top: 0px; padding: 1.5em; height: 500px; ">
        
  <table class="table dtable-striped table-hover no-head-border" border="1" style="border:solid; border-color: black; border-width: thin;">
  <th style="border:solid; border-width: thin; border-color: #eee; color: white; background-color: #0060a0;">No</th>

@@ -9,21 +9,15 @@
       <?php
           error_reporting(E_ALL);
           ini_set('display_errors', 1);
-          require 'config/config.php';
-          $sql=$con->query("SELECT * FROM  investment") or die("Error2 : ". mysqli_error($con));
-          while ($rows=mysqli_fetch_array($sql))
-            {
-              $amount=$rows['amount'];
-              $rate = $rows['rate'];
-              $reward = $rate/100 * $amount;
-              $balance=$reward+$amount;
-              
-              $date_t =$rows['expiredAt'];
+          require_once '../users/config/actions.php';
+          require_once 'config/conn.php';
+          $email = $_SESSION['user'];
+          $user = currentUser($conn, $email);
+          $userId = $user['id'];
+        $investments = allInvestment($conn, $userId);
+       $activeInvestment = activeInvestment($conn, $userId);
 
-              $date_expired = date('d-M-Y',strtotime('+0 days',strtotime(str_replace('/', '-', $date_t))));
-            }
-
-    
+        $totalDeposit = getTotalDeposit($conn, $userId);
 
         function formatMoney($money){
           if($money >= 50000 && $money < 1000000)
@@ -50,8 +44,8 @@
           <!-- small box -->
           <div class="small-box bg-white shadow rounded-xl text-orange-700 hover:text-orange-400">
             <div class="inner md:mx-5">
-            <h5 class="text-2xl py-12 ">Total Deposits</h5>    
-            <h3 style="font-size: 30px;" class="py-6  pb-8">NGN <?php echo formatMoney($amount); ?></h3>
+            <h5 class="text-2xl py-12 ">Available Balance</h5>    
+            <h3 style="font-size: 30px;" class="py-6  pb-8">NGN <?php echo number_format($user['wallet']); ?></h3>
             </div>
             <div class="icon" style="padding-top: 10px">
               <i class="glyphicon glyphicon"></i>
@@ -63,8 +57,8 @@
           <!-- small box -->
           <div class="small-box bg-white shadow rounded-xl text-orange-700 hover:text-orange-400">
             <div class="inner md:mx-5">
-            <h5 class="text-2xl py-12">Reward</h5>    
-            <h3 style="font-size: 30px;" class="py-4">NGN <?php echo formatMoney($reward); ?></h3>
+            <h5 class="text-2xl py-12">Active Investment</h5>    
+            <h3 style="font-size: 30px;" class="py-4"><?= count($activeInvestment) ?></h3>
             </div>
             <div class="icon" style="padding-top: 10px;">
               <i class="glyphicon glyphicon"></i>
@@ -72,27 +66,15 @@
           </div>
         </div>
 
-    
-        <div class="col-lg-4 col-xs-6 cursor-pointer">
-          <!-- small box -->
-          <div class="small-box bg-white shadow rounded-xl text-orange-700 hover:text-orange-400">
-            <div class="inner md:mx-5">
-            <h5 class="text-2xl py-12 mx-5">Available Balance</h5>    
-            <h3 style="font-size: 30px;" class="py-4">NGN <?php echo formatMoney($balance) ?></h3>
-            </div>
-            <div class="icon" style="padding-top: 10px;">
-              <i class="glyphicon glyphicon"></i>
-            </div>
-          </div>
-        </div>
+  
      
 
         <div class="col-lg-4 col-xs-6 cursor-pointer">
           <!-- small box -->
           <div class="small-box bg-white shadow rounded-xl text-orange-700 hover:text-orange-400">
             <div class="inner md:mx-5">
-              <h5 class="text-2xl py-12">Increase Rate</h5>    
-              <h3 style="font-size: 40px;" class="py-4"><?php echo $rate ?>%</h3>
+              <h5 class="text-2xl py-12">Interest Rate</h5>    
+              <h3 style="font-size: 40px;" class="py-4"><?php echo 30 ?>%</h3>
             </div>
             <div class="icon" style="padding-top: 10px;">
               <i class="glyphicon glyphicon"></i>
@@ -105,8 +87,8 @@
           <!-- small box -->
           <div class="small-box bg-white shadow rounded-xl text-orange-700 hover:text-orange-400">
             <div class="inner md:mx-5">
-              <h5 class="text-2xl py-12">Till</h5>    
-              <h3 style="font-size: 40px;" class="py-4"><?php echo $date_expired ?></h3>
+              <h5 class="text-2xl py-12">Next Withdrawal Date</h5>    
+              <h3 style="font-size: 40px;" class="py-4"><?= $activeInvestment ? date('d-M-Y',strtotime('+0 days',strtotime(str_replace('/', '-', $activeInvestment[0]['expiredAt'])))) : "No Investment"; ?></h3>
             </div>
             <div class="icon" style="padding-top: 10px;">
               <i class="glyphicon glyphicon"></i>

@@ -6,7 +6,7 @@
 
         function usersInfo($conn,$user_email)
         {
-            $sql="SELECT * FROM vol_admin WHERE email=:email";
+            $sql="SELECT * FROM admin WHERE email=:email";
             $stmt = $conn->prepare($sql);
             $stmt->execute(['email'=>$user_email]);
             $result = $stmt->fetch(PDO::FETCH_ASSOC);

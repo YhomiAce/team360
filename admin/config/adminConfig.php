@@ -9,6 +9,15 @@
         return $result;
     }
 
+    function allActiveUsers($conn)
+    {
+        $sql="SELECT * FROM users WHERE status = 1";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute([]);
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
     function allAgent($conn)
     {
         $sql="SELECT * FROM agent";

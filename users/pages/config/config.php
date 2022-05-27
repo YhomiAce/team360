@@ -2,8 +2,8 @@
 # Localhost
 $host="localhost"; //hostname
 $username="root"; //mysql username
-$password=""; //mysql password
-$db_name="newhelper_app"; //Database name
+$password="6969"; //mysql password
+$db_name="investment_db"; //Database name
 
 //   // Heroku
   // $host = "us-cdbr-east-04.cleardb.com";
@@ -20,7 +20,7 @@ $db_name="newhelper_app"; //Database name
 //connect to database
 $con=mysqli_connect($host,$username,$password, $db_name);
 if(!$con)
-{die('could not connect1 Err:'.mysqli_error());}
+{die('could not connect1 Err:');}
 //mysql_select_db($db_name,$con)
 //or die("could not connect2: ".mysql_error());
 ?>

@@ -14,6 +14,13 @@ if(!isset($_SESSION['volunteer']))
     </head>
     <body className='snippet-body'>
         <div class="container2" style="height:100%;">
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
             <div class="frame">
                 <div class="nav">
                     <ul class="links">
@@ -21,7 +28,7 @@ if(!isset($_SESSION['volunteer']))
                     </ul>
                 </div>
                 <div>
-                    <div id="signinBox">
+                    <div id="signinBox" >
                         <form class="form-signin" id="admin-form"  method="post" name="form">
                             <div id="passMsg"></div>
                             <label for="username">Email</label>

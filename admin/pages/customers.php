@@ -10,11 +10,11 @@ ini_set('display_errors', 1);
       <div class="col-md-6">
       <h2 style="margin-top: 0px;">
       	<?php
-require 'config/config.php';
-$sql=$con->query("SELECT * FROM auth ORDER BY id") or die("Error2 : ". mysqli_error($con));
-$count = mysqli_num_rows($sql);	
-?>
-       <?php echo number_format($count); ?> Total Users
+          require_once 'config/db.php';
+          require_once 'config/actions.php';
+          $users = allUsers($conn);
+        ?>
+       <?php echo count($users); ?> Total Users
       </h2>
       <p><a href="../admin/?p=dashboard"><i class="fa fa-dashboard"></i> Home</a> &nbsp;&nbsp; > &nbsp;&nbsp; <a class="active">All Users</a></p>
     </div>
@@ -32,7 +32,7 @@ $count = mysqli_num_rows($sql);
           <!-- <a href="add_product.php"><button style="background-color: #0060cc; height: 40px; width: 250px; border:none; border-radius: 5px; color: white; font-size: 16px;">ADD PRODUCT</button></a> -->
       
          <h4 style="color: green; font-weight: bold;"></h4>
-          <div style="dborder: solid; border-width: thin; border-color: #ccc; margin-top: 0px; padding: 1.5em; dheight: 500px; ">
+          <div style="border: solid; border-width: thin; border-color: #ccc; margin-top: 0px; padding: 1.5em; height: 500px; ">
        
 <div style="margin: 20px; margin-top: 0px;">
         <form method="get" action="#">
@@ -46,96 +46,31 @@ $count = mysqli_num_rows($sql);
  <th style="border:solid; border-width: thin; border-color: #eee; color: white; background-color: #0060a0;">Full Name</th>
 <!-- <th style="border:solid; border-width: thin; border-color: #eee; color: white; background-color: #0060a0;">Last Name</th>-->
  <th style="border:solid; border-width: thin; border-color: #eee; color: white; background-color: #0060a0;">Email</th>
- <th style="border:solid; border-width: thin; border-color: #eee; color: white; background-color: #0060a0;">Phone</th> 
+ <th style="border:solid; border-width: thin; border-color: #eee; color: white; background-color: #0060a0;">Wallet Balance</th> 
  <th style="border:solid; border-width: thin; border-color: #eee; color: white; background-color: #0060a0;">Date Joined</th>
-<th style="border:solid; border-width: thin; border-color: #eee; color: white; background-color: #0060a0;">View</th>
+<th style="border:solid; border-width: thin; border-color: #eee; color: white; background-color: #0060a0;">Action</th>
 <!-- <th style="border:solid; border-width: thin; border-color: #eee;">Delete</th>-->
 
-<?php
-require 'config/config.php';
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
 
-$sql=$con->query("SELECT * FROM auth ORDER BY id DESC LIMIT 0,500") or die("Error2 : ". mysqli_error($con));
+<?php foreach($users as $key => $user) : ?>
 
-if(isset($_GET['q']))
-{
-  $q = $_GET['q'];
-  $sql=$con->query("SELECT * FROM auth WHERE fullname LIKE '%$q%' OR email LIKE '%$q%'  ORDER BY id DESC LIMIT 0, 500") or die("Error2 : ". mysqli_error($con));
-}
+<tr>
+  <td style="border:solid; border-width: thin; border-color: #eee;"><?php echo $key + 1; ?></td>
+  <td style="border:solid; border-width: thin; border-color: #eee;"><?php echo $user["fullname"]; ?></td>
+  <td style="border:solid; border-width: thin; border-color: #eee;"><?php echo $user["email"]; ?></td>
+  <td style="border:solid; border-width: thin; border-color: #eee;"><?php echo $user["wallet"]; ?></td>
+ <td style="border:solid; border-width: thin; border-color: #eee;"><?php echo date('d-M-Y',strtotime('+0 days',strtotime(str_replace('/', '-', $user['created_at'])))); ?></td>
+ <td style="border:solid; border-width: thin; border-color: #eee;"> 
+ <button class="btn btn-primary activateBtn" id="<?=$user["id"]; ?>" <?=$user["status"] == 1 ? "disabled" : '' ?>>Activate</button>
+ <button class="btn btn-danger deactivateBtn" id="<?=$user["id"]; ?>" <?=$user["status"] == 0 ? "disabled" : '' ?>>Deactivate</button>
+</td>
+</tr>
 
- $i=1;
-   
-  while ($rows=mysqli_fetch_array($sql))
-   {
-    $id=$rows['id'];
-    $fname = $rows['fullname'];
-    $email=$rows['email'];
-    $phone=$rows['phone'];
-    
-    $date_t =$rows['createdAt'];
 
-    $date_t = date('d-M-Y',strtotime('+0 days',strtotime(str_replace('/', '-', $date_t))));
-    
-    
-?>
-<tr><td style="border:solid; border-width: thin; border-color: #eee;"><?php echo $i; ?><td style="border:solid; border-width: thin; border-color: #eee;"><?php echo $fname; ?><td style="border:solid; border-width: thin; border-color: #eee;"><?php echo $email; ?> <td style="border:solid; border-width: thin; border-color: #eee;"><?php echo $phone; ?><td style="border:solid; border-width: thin; border-color: #eee;"><?php echo $date_t; ?><td style="border:solid; border-width: thin; border-color: #eee;"><a href="?p=view_customer&id=<?php echo $id; ?>"> <button class="btn btn-primary">View</button></a></td></td></td></td></td></td></tr>
-
-<?php
-$i++;
-}
-?>
+<?php endforeach; ?>
 
 </table>
 
-
-<script type="text/javascript">
-function delete_cat(id)
-{
-
-var r = confirm ("Do you want to Delete this item?");
-
-if (r == true) {
-var dataString='id='+id;
-$.ajax({
-type:"GET",
-url:"process/delete_cat.php",
-data:dataString,
-jsonp:"callback",
-jsonpCallback:"Sverify",
-dataType:"jsonp",
-crossDomain:true,
-success: function(data){
-var success = data.success;
-if(success == "Yes")
-{
-//alert("Category Deleted Successfully!");
-window.location = "?p=product_categories";
-}
-else if (success = "No")
-{
- alert("An error Occured!");
-}
-},
-beforeSend:function()
-{
-$('#loader').fadeOut(200).show();
-},
-error: function(jqXHR, textStatus, errorThrown)
-{
-    alert ("Could not connect to server");
-    //$('#in').fadeOut(200).hide();
-
-    }
-
-
-});} else {
-}
-
-
- 
-}
-</script>
 
         </div>
         </div>
@@ -163,9 +98,119 @@ error: function(jqXHR, textStatus, errorThrown)
   <div class="control-sidebar-bg"></div>
 </div>
 <!-- ./wrapper -->
-
-   
 <?php include('includes/js.php')?>
+<script>
+$('body').on('click','.deactivateBtn',function(e){
+  e.preventDefault()
+  var userId = $(this).attr('id');
+  console.log(userId);
+  Swal.fire({
+      title: 'Are you sure?',
+      text: "Do You want to Deactivate this User?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Deactivate User!'
+      }).then((result) => {
+      if (result.isConfirmed) {
+          $.ajax({
+              url:'pages/config/controller.php',
+              method:'post',
+              data:{id:userId, action: "deactivateUser"},
+              success:(res)=>{
+                console.log(res);
+                if (res === "success") {
+                  
+                  Swal.fire({
+                    title: "User deactivated",
+                    icon: 'success',
+                    text: "User Deactivated Successfully"
+                  }).then(()=>{
+                  location.reload()
+
+                  })
+                }
+                if (res === "fail") {
+                  Swal.fire({
+                    title: "Server Error",
+                    icon: 'error',
+                    text: "Server Error Could not activate User "
+                  })
+                }
+                if (res === "verified") {
+                  Swal.fire({
+                    title: "Account Activated",
+                    icon: 'warning',
+                    text: "User Account has already been Verified!"
+                  })
+                }  
+                   
+              }
+          })
+          
+      }
+  })
+  
+})
+
+$('body').on('click','.activateBtn',function(e){
+  e.preventDefault()
+  var userId = $(this).attr('id');
+  console.log(userId);
+  Swal.fire({
+      title: 'Are you sure?',
+      text: "Do You want to Activate this User!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Activate user!'
+      }).then((result) => {
+      if (result.isConfirmed) {
+          $.ajax({
+              url:'pages/config/controller.php',
+              method:'post',
+              data:{id:userId, action: "activateUser"},
+              success:(res)=>{
+                console.log(res);
+                if (res === "success") {
+                  
+                  Swal.fire({
+                    title: "Successful Activation",
+                    icon: 'success',
+                    text: "User Activated Successfully"
+                  }).then(()=>{
+                  location.reload()
+
+                  })
+                }
+                if (res === "fail") {
+                  Swal.fire({
+                    title: "Server Error",
+                    icon: 'error',
+                    text: "Could not activate User "
+                  })
+                }
+                
+                if (res === "verified") {
+                  Swal.fire({
+                    title: "Account Activated",
+                    icon: 'warning',
+                    text: "User Account has already been Verified!"
+                  })
+                }  
+                  
+                   
+              }
+          })
+          
+      }
+  })
+  
+})
+</script>
+
 </body>
 </html>
 

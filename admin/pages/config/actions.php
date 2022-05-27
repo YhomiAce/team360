@@ -15,6 +15,24 @@
         </div>';
     }
 
+    function allUsers($conn)
+    {
+        $sql="SELECT * FROM users";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute([]);
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+    function allActiveUsers($conn)
+    {
+        $sql="SELECT * FROM users WHERE status = 1";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute([]);
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
     function fetchAllWeight($conn) {
         $sql = "SELECT * FROM kg_range";
         $stmt = $conn->prepare($sql);
@@ -383,7 +401,7 @@
     }
 
     function fetchAllWithdrawal($conn) {
-        $sql = "SELECT * FROM withdrawal WHERE status = 'New' ORDER BY id DESC LIMIT 0, 200";
+        $sql = "SELECT * FROM withdrawals WHERE status = 'pending' ORDER BY id DESC LIMIT 0, 200";
         $stmt = $conn->prepare($sql);
         $stmt->execute();
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -391,14 +409,14 @@
     }
 
     function fetchAllApprovedWithdrawal($conn) {
-        $sql = "SELECT * FROM withdrawal WHERE status = 'Approved' ORDER BY id DESC LIMIT 0, 200";
+        $sql = "SELECT * FROM withdrawals WHERE status = 'approved' ORDER BY id DESC LIMIT 0, 200";
         $stmt = $conn->prepare($sql);
         $stmt->execute();
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
     function fetchAllDisapprovedWithdrawal($conn) {
-        $sql = "SELECT * FROM withdrawal WHERE status = 'Disapproved' ORDER BY id DESC LIMIT 0, 200";
+        $sql = "SELECT * FROM withdrawals WHERE status = 'disapproved' ORDER BY id DESC LIMIT 0, 200";
         $stmt = $conn->prepare($sql);
         $stmt->execute();
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -406,78 +424,87 @@
     }
 
     function fetchWithdraw($conn, $id) {
-        $sql = "SELECT * FROM withdrawal WHERE id =:id";
+        $sql = "SELECT * FROM withdrawals WHERE id =:id";
         $stmt = $conn->prepare($sql);
         $stmt->execute(['id'=>$id]);
-        $result = $stmt->fetch();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result;
     }
 
     function getUserDetails($conn, $email) {
-        $sql = "SELECT * FROM auth WHERE email =:email";
+        $sql = "SELECT * FROM users WHERE email =:email";
         $stmt = $conn->prepare($sql);
         $stmt->execute(['email'=>$email]);
-        $result = $stmt->fetch();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result;
     }
 
+    function getUserInfo($conn, $id) {
+        $sql = "SELECT * FROM users WHERE id =:id";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute(['id'=>$id]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+
     function approvePayement($conn, $id, $date) {
-        $sql = "UPDATE withdrawal SET status = 'Approved', approved_date =:approve_date WHERE id =:id";
+        $sql = "UPDATE withdrawals SET status = 'approved', approvedDate =:date, approved = 1 WHERE id =:id";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute(["date"=>$date,"id"=>$id]);
+        return true;
+    }
+
+    function disapprovePayement($conn, $id, $date) {
+        $sql = "UPDATE withdrawals SET status = 'disapproved', approvedDate =:approve_date WHERE id =:id";
         $stmt = $conn->prepare($sql);
         $stmt->execute(["approve_date"=>$date,"id"=>$id]);
         return true;
     }
 
-    function disapprovePayement($conn, $id) {
-        $sql = "UPDATE withdrawal SET status = 'Disapproved' WHERE id =:id";
-        $stmt = $conn->prepare($sql);
-        $stmt->execute(["id"=>$id]);
-        return true;
-    }
-
     function updateUserBalance($conn, $userId, $balance) {
-        $sql = "UPDATE wallets SET balance = :balance WHERE user_id =:userId";
+        $sql = "UPDATE users SET wallet = :balance WHERE id =:userId";
         $stmt = $conn->prepare($sql);
         $stmt->execute(["balance"=>$balance, "userId"=>$userId]);
         return true;
     }
 
-    function searchStates($conn, $q) {
-        $sql = "SELECT * FROM states WHERE name LIKE '%$q%' ";
-        $stmt = $conn->prepare($sql);
-        $stmt->execute();
-        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        return $result;
-    }
+    // function searchStates($conn, $q) {
+    //     $sql = "SELECT * FROM states WHERE name LIKE '%$q%' ";
+    //     $stmt = $conn->prepare($sql);
+    //     $stmt->execute();
+    //     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    //     return $result;
+    // }
 
-    function createNewState($conn, $name) {
-        $sql = "INSERT INTO states(name) VALUES(:name)";
-        $stmt = $conn->prepare($sql);
-        $stmt->execute(["name"=>$name]);
-        return true;
-    }
+    // function createNewState($conn, $name) {
+    //     $sql = "INSERT INTO states(name) VALUES(:name)";
+    //     $stmt = $conn->prepare($sql);
+    //     $stmt->execute(["name"=>$name]);
+    //     return true;
+    // }
 
-    function deleteState($conn, $id) {
-        $sql = "DELETE FROM states WHERE id =:id";
-        $stmt = $conn->prepare($sql);
-        $stmt->execute(["id"=>$id]);
-        return true;
-    }
+    // function deleteState($conn, $id) {
+    //     $sql = "DELETE FROM states WHERE id =:id";
+    //     $stmt = $conn->prepare($sql);
+    //     $stmt->execute(["id"=>$id]);
+    //     return true;
+    // }
 
-    function fetchUserWallet($conn, $id) {
-        $sql = "SELECT * FROM wallets WHERE user_id = ? ";
-        $stmt = $conn->prepare($sql);
-        $stmt->execute([$id]);
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $result;
-    }
+    // function fetchUserWallet($conn, $id) {
+    //     $sql = "SELECT * FROM wallets WHERE user_id = ? ";
+    //     $stmt = $conn->prepare($sql);
+    //     $stmt->execute([$id]);
+    //     $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    //     return $result;
+    // }
 
-    function rejectKyc($conn, $userId) {
-        $sql = "UPDATE porlt_users SET kyc_status =1 WHERE id =:userId";
-        $stmt = $conn->prepare($sql);
-        $stmt->execute(["userId"=>$userId]);
-        return true;
-    }
+    // function rejectKyc($conn, $userId) {
+    //     $sql = "UPDATE porlt_users SET kyc_status =1 WHERE id =:userId";
+    //     $stmt = $conn->prepare($sql);
+    //     $stmt->execute(["userId"=>$userId]);
+    //     return true;
+    // }
 
     function getUserById($conn, $id) {
         $sql = "SELECT * FROM porlt_users WHERE id =:id";
@@ -501,6 +528,95 @@
         $stmt->execute([$id]);
         $result = $stmt->fetch();
         return $result;
+    }
+
+    function activateUser($conn, $userId) {
+        $sql = "UPDATE users SET status =1 WHERE id =:userId";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute(["userId"=>$userId]);
+        return true;
+    }
+
+    function deactivateAUser($conn, $userId) {
+        $sql = "UPDATE users SET status =0 WHERE id =:userId";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute(["userId"=>$userId]);
+        return true;
+    }
+
+    function allAdmins($conn) {
+        $sql = "SELECT * FROM admin";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+    function checkAdmin($conn, $email) {
+        $sql = "SELECT * FROM admin WHERE email =?";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute([$email]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+    function addNewAdmin($conn, $name, $email, $password, $level) {
+        $sql = "INSERT into admin(name, email, password, level) VALUES(?, ?, ?, ?)";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute([$name, $email, $password, $level]);
+        return true;
+    }
+
+    function deleteAdmin($conn, $id) {
+        $sql = "DELETE FROM admin WHERE id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute([$id]);
+        return true;
+    }
+
+    function fetchAllInvestments($conn) {
+        $sql = "SELECT * FROM investment WHERE status = 'active' ORDER BY id DESC LIMIT 0, 200";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+    function fetchAllClosedInvestments($conn) {
+        $sql = "SELECT * FROM investment WHERE status = 'closed' ORDER BY id DESC LIMIT 0, 200";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+    function fetchAllCancelledInvestments($conn) {
+        $sql = "SELECT * FROM investment WHERE status = 'cancelled' ORDER BY id DESC LIMIT 0, 200";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+    function approveInvestment($conn, $id) {
+        $sql = "UPDATE investment SET status = 'closed' WHERE id =:id";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute(["id"=>$id]);
+        return true;
+    }
+
+    function cancelInvestment($conn, $id) {
+        $sql = "UPDATE investment SET status = 'cancelled' WHERE id =:id";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute(["id"=>$id]);
+        return true;
+    }
+
+    function addInvestment($conn, $userId, $amount, $rate, $reward, $status, $expiredAt) {
+        $sql = "INSERT INTO investment(userId, amount, rate, reward, status, expiredAt) VALUES(?, ?, ?, ?, ?, ?)";
+        $stmt = $conn->prepare($sql);
+        $res = $stmt->execute([$userId, $amount, $rate, $reward, $status, $expiredAt]);
+        return true;
     }
 
 ?>

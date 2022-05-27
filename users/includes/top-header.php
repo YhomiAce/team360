@@ -11,10 +11,10 @@
         <span class="sr-only">Toggle navigation</span>
       </a>
 
-      <div class="flex items-center text-md text-white">
+      <!-- <div class="flex items-center text-md text-white">
         <h5 class="mx-3"><b class="text-orange-300">Name: </b>Summerfield integrated consult</h5>
         <h5 class="mx-3"><b class="text-orange-300">Account no: </b>4210008008</h5>
         <h5 class="mx-3"><b class="text-orange-300">Bank: </b>Fidelity</h5>
-      </div>
+      </div> -->
     </nav>
   </header>

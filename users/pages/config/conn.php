@@ -1,10 +1,10 @@
 <?php
 
 // localhost
-    $servername="localhost"; //hostname
-    $username="root"; //mysql username
-    $password=""; //mysql password
-    $dbName="newhelper_app"; //Database name
+    // $servername="localhost"; //hostname
+    // $username="root"; //mysql username
+    // $password="6969"; //mysql password
+    // $dbName="investment_db"; //Database name
 
     // Heroku
   // $servername = "us-cdbr-east-04.cleardb.com";
@@ -14,11 +14,10 @@
 
 
   // Cpanel
-  // $servername="localhost"; //hostname
-  // $username="alphavi1_porlts_root"; //mysql username
-  // $password="chairman@2020!!"; //mysql password
-  // $dbName="alphavi1_porlt_db"; //Database name
-
+  $servername="localhost"; //hostname
+  $username="team360_backend_root"; //mysql username
+  $password="Chairman@2022!"; //mysql password
+  $dbName="team360_backend"; //Database name
 
   try {
     $conn = new PDO("mysql:host=$servername;dbname=$dbName", $username, $password);
@@ -29,4 +28,3 @@
   } catch(PDOException $e) {
     echo "Connection failed: " . $e->getMessage();
   }
-?>

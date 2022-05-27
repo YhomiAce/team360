@@ -1,8 +1,20 @@
 <?php
-    $servername = "localhost";
-    $dbName = "newhelper_app";
-    $username = "root";
-    $password = "";
+    // $servername = "localhost";
+    // $dbName = "investment_db";
+    // $username = "root";
+    // $password = "6969";
+     // Heroku
+  // $servername = "us-cdbr-east-04.cleardb.com";
+  // $dbName = "heroku_f4565c2e7db9247";
+  // $username = "be2ec2be0cee8b";
+  // $password = "2f4ac3b3";
+
+
+  // Cpanel
+  $servername="localhost"; //hostname
+  $username="team360_backend_root"; //mysql username
+  $password="Chairman@2022!"; //mysql password
+  $dbName="team360_backend"; //Database name
 
     try {
         $conn = new PDO("mysql:host=$servername;dbname=$dbName;charset=UTF8", $username, $password);
@@ -12,5 +24,3 @@
     } catch(PDOException $e) {
         echo "Connection failed: " . $e->getMessage();
     }
-
-?>

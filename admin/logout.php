@@ -2,6 +2,6 @@
 session_start();
 session_destroy();
 session_unset();
-header("location:../admin/?p=dashboard");
+header("location:../admin/");
 exit;
 ?>

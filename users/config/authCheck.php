@@ -14,7 +14,7 @@
         if(strlen($name) > 1 && strlen($email) > 1){
             if(strlen($password) > 5){
                 if(!$checkExistence){
-                    if(createNewUser($conn, $email, $hashPwd, $name, $token)){
+                    if(createNewUser($conn, $name, $email, $hashPwd, $token)){
                         echo "Registered";
                     }else{
                         echo "server error";
@@ -58,19 +58,27 @@
 
 
     if(isset($_POST['action']) && $_POST['action'] == 'edit'){
-        $name = ($_POST['name']);
-        $email = ($_POST['email']);
-        $password = testInput($_POST['pass']);
-        $conf_pass = ($_POST['cpass']);
+        $name = ($_POST['name']);        
+        $oldPassword = testInput($_POST['oldPassword']);
+        $password = testInput($_POST['password1']);
+        $conf_pass = ($_POST['password2']);
         $currentUser = currentUser($conn,$_SESSION['user']);
-        $token = bin2hex(random_bytes(50));        
+        // print_r($currentUser);
+        if (!password_verify($oldPassword, $currentUser['password'])) {
+            // echo "TRUE";
+            echo "Old Password is incorrect";
+        }        
         $hashPwd = password_hash($password,PASSWORD_DEFAULT);
         if($currentUser){
-            if(strlen($name) > 1 && strlen($email) > 1){
-                if(strlen($password) > 6){
-                    if(editUser($conn,$name,$hashPwd,$email,$currentUser['id'])){
-                        $_SESSION['user'] = $email;
-                        echo "Password changed";
+            
+            if(strlen($name) > 5 ){
+                
+                if(strlen($password) > 5){
+                    $updated = editUser($conn,$name,$hashPwd,$currentUser['id']);
+                    // print_r($currentUser);
+                    if($updated){
+                        // $_SESSION['user'] = $email;
+                        echo "changed";
                     }else{
                         echo "server error";
                     };
@@ -80,42 +88,37 @@
             }else{
                 echo "All field are required";
             }
+        }else {
+            echo "server error here";
         }
     };
 
 
 
 
-    if(isset($_POST['action']) && $_POST['action'] == 'invest'){
+    if(isset($_POST['action']) && $_POST['action'] == 'withdraw'){
         $name = ($_POST['name']);
         $amount = ($_POST['amount']);
         $bank = ($_POST['bank']);
         $acc_num = ($_POST['acc_num']);
-        $months = testInput($_POST['months']);
         $currentUser = currentUser($conn,$_SESSION['user']);
+        $userId = $currentUser['id'];
+        $wallet = $currentUser['wallet'];
+        $status = "pending";
         
         if($currentUser){
-            $investor = investors($conn,$currentUser['id']);
-            $userId = $currentUser['id'];
-            if(!$investor){
-                if(strlen($name) > 1 && strlen($amount) > 1 && !empty($months)){
-                    if(investMoney($conn,$userId, $amount, $name, $months, $bank, $acc_num)){
-                        echo "Invested";
-                    }else{
-                        echo "server error";
-                    };
-                }else{
-                    echo "All field are required";
-                }
-            }elseif(strtotime($investor['createdAt']) > strtotime($investor['createdAt']. ' + 1 months')){
-                // echo strtotime($investor['createdAt']).'-----';
-                // echo strtotime($investor['createdAt']. ' + 1 months');
-                // echo "I Can create new one";
+            if ($wallet < $amount) {
+                echo "Insufficient Fund";
             }else{
-                echo "Only one investment in a month";
+                $withdraw = makeWithdrawal($conn, $userId, $amount, $bank, $name, $acc_num, $status);
+                if($withdraw){
+                    echo "Withdrawal Request Initiated";
+                }else{
+                    echo "Server Error";
+                }
             }
         }else{
-
+            echo "Invalid User";
         }
     };
 

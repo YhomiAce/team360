@@ -12,19 +12,18 @@
         </li> 
 
         <li class="treeview">
-          <a href="../users/?p=new_investment">
-           <i class="fa fa-wallet"></i>  <span class="text-orange-600" style="font-family: verdana; font-size: 13px; font-weight: normal;">NEW INVESTMENT</span>
-           <span class="pull-right-container">
-              <i class="fa fa-angle-right pull-right"></i>
-            </span>
+          <a href="../users/?p=investment">
+           <i class="fa fa-wallet"></i>  <span class="text-orange-600" style="font-family: verdana; font-size: 13px; font-weight: normal;">INVESTMENTS</span>
+           
           </a>
-          <ul class="treeview-menu">
-            <li style="font-family: verdana; font-size: 14px; font-weight: normal;"><a href="?p=customers" style="font-size: 13px;"><i class="fa fa-circle-o"></i>All Users</a></li>
-            <li style="font-family: verdana; font-size: 14px; font-weight: normal;"><a href="?p=pending_kyc" style="font-size: 13px;"><i class="fa fa-circle-o"></i>Awaiting Approval</a></li>
-            <li style="font-family: verdana; font-size: 14px; font-weight: normal;"><a href="?p=approved_kyc" style="font-size: 13px;"><i class="fa fa-circle-o"></i>Approved Users</a></li>
-            <li style="font-family: verdana; font-size: 14px; font-weight: normal;"><a href="?p=rejected_kyc" style="font-size: 13px;"><i class="fa fa-circle-o"></i>Rejected Users</a></li>
-            <!-- <li style="font-family: verdana; font-size: 14px; font-weight: normal;"><a href="?p=sub_categories" style="font-size: 13px;"><i class="fa fa-circle-o"></i>Sub Categories</a></li>-->                 
-          </ul>
+          
+        </li> 
+        <li class="treeview">
+          <a href="../users/?p=withdraw">
+           <i class="fa fa-wallet"></i>  <span class="text-orange-600" style="font-family: verdana; font-size: 13px; font-weight: normal;">WITHDRAWALS</span>
+           
+          </a>
+          
         </li> 
         <li class="treeview">
           <a href="../users/?p=edit">
