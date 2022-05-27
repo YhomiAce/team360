@@ -116,6 +116,15 @@
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         return $row;
     }
+    // retreiving current users detatil
+    function currentUserByEmail($conn,$email)
+    {
+        $sql = "SELECT * FROM users WHERE email = :email";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute(['email'=>$email]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row;
+    }
     function currentAdmin($conn,$email)
     {
         $sql = "SELECT * FROM admin WHERE email = :email";

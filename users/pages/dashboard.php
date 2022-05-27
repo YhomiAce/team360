@@ -2,7 +2,7 @@
           error_reporting(E_ALL);
           ini_set('display_errors', 1);
           require_once 'config/actions.php';
-          require_once 'pages/config/conn.php';
+          require_once 'config/conn.php';
 
 
 ?>
@@ -17,12 +17,12 @@
       <?php
           
           $email = $_SESSION['user'];
-          $user = currentUser($conn, $email);
+          $user = currentUserByEmail($conn, $email);
           $userId = $user['id'];
         $investments = allInvestment($conn, $userId);
        $activeInvestment = activeInvestment($conn, $userId);
 
-        // $totalDeposit = getTotalDeposit($conn, $userId);
+        $totalDeposit = getTotalDeposit($conn, $userId);
         $investedAmount = getAllUserInvestment($conn, $userId);
         
         function formatMoney($money){
