@@ -3,6 +3,8 @@
           ini_set('display_errors', 1);
           require_once 'config/actions.php';
           require_once 'config/conn.php';
+          $email = $_SESSION['user'];
+          echo $email;
 
 
 ?>
@@ -16,9 +18,10 @@
       <!-- Main content -->
       <?php
           
-          $email = $_SESSION['user'];
+          
           $user = currentUserByEmail($conn, $email);
           $userId = $user['id'];
+          echo $userId;
         $investments = allInvestment($conn, $userId);
        $activeInvestment = activeInvestment($conn, $userId);
 
