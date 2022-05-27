@@ -7,17 +7,17 @@
     // $dbName="investment_db"; //Database name
 
     // Heroku
-  // $servername = "us-cdbr-east-04.cleardb.com";
-  // $dbName = "heroku_f4565c2e7db9247";
-  // $username = "be2ec2be0cee8b";
-  // $password = "2f4ac3b3";
+  $servername = "us-cdbr-east-05.cleardb.net";
+  $dbName = "heroku_0b87efe5a6815fb";
+  $username = "b33e8c3dfe31bc";
+  $password = "05d1f097";
 
 
   // Cpanel
-  $servername="localhost"; //hostname
-  $username="team360_backend_root"; //mysql username
-  $password="Chairman@2022!"; //mysql password
-  $dbName="team360_backend"; //Database name
+  // $servername="localhost"; //hostname
+  // $username="team360_backend_root"; //mysql username
+  // $password="Chairman@2022!"; //mysql password
+  // $dbName="team360_backend"; //Database name
 
 
   try {

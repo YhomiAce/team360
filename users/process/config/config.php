@@ -6,16 +6,16 @@
 // $db_name="sporylzm_porlt"; //Database name
 
 // Heroku
-// $host = "us-cdbr-east-04.cleardb.com";
-// $db_name = "heroku_f4565c2e7db9247";
-// $username = "be2ec2be0cee8b";
-// $password = "2f4ac3b3";
+$servername = "us-cdbr-east-05.cleardb.net";
+  $dbName = "heroku_0b87efe5a6815fb";
+  $username = "b33e8c3dfe31bc";
+  $password = "05d1f097";
 
 // Cpanel
-$host="localhost"; //hostname
-$username="team360_backend_root"; //mysql username
-$password="Chairman@2022!"; //mysql password
-$db_name="team360_backend"; //Database name
+// $host="localhost"; //hostname
+// $username="team360_backend_root"; //mysql username
+// $password="Chairman@2022!"; //mysql password
+// $db_name="team360_backend"; //Database name
 //connect to database
 $con=mysqli_connect($host,$username,$password, $db_name);
 // if(!$con)
