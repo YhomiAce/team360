@@ -22,7 +22,7 @@
         $investments = allInvestment($conn, $userId);
        $activeInvestment = activeInvestment($conn, $userId);
 
-        $totalDeposit = getTotalDeposit($conn, $userId);
+        // $totalDeposit = getTotalDeposit($conn, $userId);
         $investedAmount = getAllUserInvestment($conn, $userId);
         
         function formatMoney($money){
