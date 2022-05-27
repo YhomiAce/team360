@@ -46,7 +46,7 @@
             return $money;
           }   
       }
-      print_r($investedAmount);
+      // print_r($investedAmount);
 
     ?>
 
