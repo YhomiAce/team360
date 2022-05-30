@@ -196,6 +196,9 @@ if (isset($_POST['approveId'])) {
         $approve = approvePayement($conn, $id, $date_t);
         if ($approve) {
             $updateWallet = updateUserBalance($conn, $userId, $balance);
+            $type = "withdrawal";
+            $desc = "Withdraw $amount from account";
+            insertTransaction($conn, $userId, $type, $desc, $amount);
             echo "success";
         } else {
             echo "fail";
@@ -312,19 +315,19 @@ if (isset($_POST['rejectKYC'])) {
 }
 
 if (isset($_POST['deleteAdmin'])) {
-    $id =$_POST['deleteAdmin'];
+    $id = $_POST['deleteAdmin'];
     deleteAdmin($conn, $id);
     echo "success";
 }
 
 if (isset($_POST['approveInvestment'])) {
-    $id =$_POST['approveInvestment'];
+    $id = $_POST['approveInvestment'];
     approveInvestment($conn, $id);
     echo "success";
 }
 
 if (isset($_POST['cancelInvestment'])) {
-    $id =$_POST['cancelInvestment'];
+    $id = $_POST['cancelInvestment'];
     cancelInvestment($conn, $id);
     echo "success";
 }
@@ -334,13 +337,26 @@ if (isset($_POST['action']) && $_POST['action'] == "Add_new_investment") {
     $userId = $_POST['userId'];
     $rate = $_POST['rate'];
     $amount = $_POST['amount'];
-    $reward = $amount + ($amount * ($rate/100));
-    $expiredAt = date('Y-m-d H:i:s',strtotime('+30 days',strtotime(date('Y-m-d H:i:s'))));
+    $reward = $amount + ($amount * ($rate / 100));
+    $expiredAt = date('Y-m-d H:i:s', strtotime('+30 days', strtotime(date('Y-m-d H:i:s'))));
     $status = 'active';
+    $checkReferral = checkReferral($conn, $userId);
     $newInvestment = addInvestment($conn, $userId, $amount, $rate, $reward, $status, $expiredAt);
     if ($newInvestment) {
+        if ($checkReferral) {
+            $referralId = $checkReferral['referralId'];
+            $user = findAUserById($conn, $referralId);
+            $wallet = $user['wallet'];
+            $commision = $amount * (5 / 100);
+            $balance = $wallet + $commision;
+            $updateWallet = updateUserBalance($conn, $referralId, $balance);
+            $type = "Referral Bonus";
+            $desc = "Got Referral Commission of 5%";
+            insertTransaction($conn, $referralId, $type, $desc, $commision);
+            updateReferral($conn, $userId);
+        }
         echo "success";
-    }else {
+    } else {
         echo "fail";
     }
 }

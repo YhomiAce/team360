@@ -44,9 +44,12 @@ ini_set('display_errors', 1);
 <table class="table dtable-striped table-hover no-head-border" border="1" style="border:solid; border-color: black; border-width: thin; overflow-x:auto;">
  <th style="border:solid; border-width: thin; border-color: #eee; color: white; background-color: #0060a0;">NO</th>
  <th style="border:solid; border-width: thin; border-color: #eee; color: white; background-color: #0060a0;">Full Name</th>
-<!-- <th style="border:solid; border-width: thin; border-color: #eee; color: white; background-color: #0060a0;">Last Name</th>-->
  <th style="border:solid; border-width: thin; border-color: #eee; color: white; background-color: #0060a0;">Email</th>
- <th style="border:solid; border-width: thin; border-color: #eee; color: white; background-color: #0060a0;">Wallet Balance</th> 
+ <th style="border:solid; border-width: thin; border-color: #eee; color: white; background-color: #0060a0;">Phone</th>
+ <th style="border:solid; border-width: thin; border-color: #eee; color: white; background-color: #0060a0;">Wallet Balance</th>
+ <th style="border:solid; border-width: thin; border-color: #eee; color: white; background-color: #0060a0;">Bank Name</th>
+ <th style="border:solid; border-width: thin; border-color: #eee; color: white; background-color: #0060a0;">Account Name</th>
+ <th style="border:solid; border-width: thin; border-color: #eee; color: white; background-color: #0060a0;">Account Number</th>
  <th style="border:solid; border-width: thin; border-color: #eee; color: white; background-color: #0060a0;">Date Joined</th>
 <th style="border:solid; border-width: thin; border-color: #eee; color: white; background-color: #0060a0;">Action</th>
 <!-- <th style="border:solid; border-width: thin; border-color: #eee;">Delete</th>-->
@@ -58,7 +61,11 @@ ini_set('display_errors', 1);
   <td style="border:solid; border-width: thin; border-color: #eee;"><?php echo $key + 1; ?></td>
   <td style="border:solid; border-width: thin; border-color: #eee;"><?php echo $user["fullname"]; ?></td>
   <td style="border:solid; border-width: thin; border-color: #eee;"><?php echo $user["email"]; ?></td>
+  <td style="border:solid; border-width: thin; border-color: #eee;"><?php echo $user["phone"]; ?></td>
   <td style="border:solid; border-width: thin; border-color: #eee;"><?php echo $user["wallet"]; ?></td>
+  <td style="border:solid; border-width: thin; border-color: #eee;"><?php echo $user["bank_name"]; ?></td>
+  <td style="border:solid; border-width: thin; border-color: #eee;"><?php echo $user["account_name"]; ?></td>
+  <td style="border:solid; border-width: thin; border-color: #eee;"><?php echo $user["account_number"]; ?></td>
  <td style="border:solid; border-width: thin; border-color: #eee;"><?php echo date('d-M-Y',strtotime('+0 days',strtotime(str_replace('/', '-', $user['created_at'])))); ?></td>
  <td style="border:solid; border-width: thin; border-color: #eee;"> 
  <button class="btn btn-primary activateBtn" id="<?=$user["id"]; ?>" <?=$user["status"] == 1 ? "disabled" : '' ?>>Activate</button>

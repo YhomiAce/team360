@@ -99,15 +99,74 @@ $('#form-submit').click((e) => {
    e.preventDefault()
    if ($("#edit-form")[0].checkValidity()) {
       e.preventDefault()
-      $('#edit-btn').val('Please wait...')
+      $('#form-submit').val('Please wait...')
+      $('#messErr').text("")
+      $.ajax({
+         url: 'config/authCheck.php',
+         method: 'post',
+         data: $('#edit-form').serialize() + "&action=edit",
+         success: function (response) {
+            console.log(response);
+            if (response === 'changed') {
+               $('#messSuss').text("Profile Updated");
+               $('#form-submit').val('Save')
+               $('#editForm').hide();
+               $('.Submitted').show()
+            } else {
+               $('#messErr').text(response)
+               $('#regAlert').html(response)
+               $('#form-submit').val('Save')
+            }
+         }
+      })
+   }
+
+})
+
+
+$('#bank_btn').click((e) => {
+   e.preventDefault();
+   console.log("bank_form");
+   if ($("#bank_form")[0].checkValidity()) {
+      e.preventDefault()
+      $('#bank_btn').val('Please wait...')
+      
+         $('#messErr').text("")
+         $.ajax({
+            url: 'config/authCheck.php',
+            method: 'post',
+            data: $('#bank_form').serialize() + "&action=add_bank_details",
+            success: function (response) {
+               console.log(response);
+               if (response === 'changed') {
+                  $('#messSuss').text("Bank Profile Updated");
+                  $('#bank_btn').val('Save')
+                  $('#editForm').hide();
+                  $('.Submitted').show()
+               } else {
+                  $('#messErr').text(response)
+                  $('#regAlert').html(response)
+                  $('#bank_btn').val('Save')
+               }
+            }
+         })
+   }
+
+})
+
+$('#password_btn').click((e) => {
+   e.preventDefault()
+   if ($("#password-form")[0].checkValidity()) {
+      e.preventDefault()
+      $('#password_btn').val('Please wait...')
       var pwd = $('#pass').val();
       console.log(pwd);
-      if (pwd.length < 6 ) {
-         $('#edit-btn').val('Update User')
+      if (pwd.length < 6) {
+         $('#password_btn').val('Submit')
          $('#messErr').text("Short Password")
       }
       if ($('#pass').val() !== $('#cpass').val()) {
-         $('#edit-btn').val('Update User')
+         $('#password_btn').val('Submit')
          $('#messErr').text("Passwords do not match")
          return;
       } else {
@@ -115,17 +174,18 @@ $('#form-submit').click((e) => {
          $.ajax({
             url: 'config/authCheck.php',
             method: 'post',
-            data: $('#edit-form').serialize() + "&action=edit",
+            data: $('#password-form').serialize() + "&action=updatePassword",
             success: function (response) {
                console.log(response);
                if (response === 'changed') {
-                  $('#messSuss').text("Profile Updated")
+                  $('#messSuss').text("Password Changed")
+                  $('#password_btn').val('Save')
                   $('#editForm').hide();
                   $('.Submitted').show()
                } else {
                   $('#messErr').text(response)
                   $('#regAlert').html(response)
-                  $('#edit-btn').val('Save')
+                  $('#password_btn').val('Save')
                }
             }
          })
@@ -133,7 +193,6 @@ $('#form-submit').click((e) => {
    }
 
 })
-
 
 
 // reset password
@@ -189,7 +248,7 @@ $('#withdrawBtn').click((e) => {
          success: function (response) {
             console.log(response);
             if (response === 'Invested') {
-               
+
                $('#messSuss').html('<div class="text-white leading-10 h-10 text-center px-10 bg-green-500">' + response + '</div>')
 
                $('#editForm').hide();

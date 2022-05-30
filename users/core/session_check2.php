@@ -2,6 +2,12 @@
 session_start();
 if(!isset($_SESSION['user']))
 {
+    $reference = '';
+    if (isset($_GET['reference'])) {
+        $reference = $_GET['reference'];
+        
+    }
+
 ?>
 <!doctype html>
 <html>
@@ -40,6 +46,7 @@ if(!isset($_SESSION['user']))
                     </div>
                     <div id="signupBox" style="display:none;">
                         <form class="form-signup" id="register-form" method="POST">
+                            <input type="hidden" name="reference" value="<?= $reference ?>">
                             <div id="passMsg2"></div>
                             <label for="email">Full Name</label>
                             <input class="form-styling" type="text" name="fullname" placeholder=""/>

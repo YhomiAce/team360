@@ -2,19 +2,29 @@
     require('../config/actions.php');
     session_start();
     if(isset($_POST['action']) && $_POST['action'] == 'register'){
+        $referral = testInput($_POST['reference']);
         $name = testInput($_POST['fullname']);
         $email = testInput($_POST['email']);
         $password = testInput($_POST['password']);
+        
         $conf_pass = testInput($_POST['conf_pass']);
 
         $token = bin2hex(random_bytes(50));        
         $hashPwd = password_hash($password,PASSWORD_DEFAULT);
         $checkExistence = userExist($conn,$email);
+        $reference = generateRandomString(6);
 
         if(strlen($name) > 1 && strlen($email) > 1){
             if(strlen($password) > 5){
                 if(!$checkExistence){
-                    if(createNewUser($conn, $name, $email, $hashPwd, $token)){
+                    if(createNewUser($conn, $name, $email, $hashPwd, $token, $reference)){
+                        $newuser = getUserDetails($conn, $email);
+                        if ($referral !== "") {
+                            $user = getUserByReferralId($conn, $referral);
+                            $referralId = $user['id'];
+                            $refereeId = $newuser['id'];
+                            createReferrals($conn, $referralId, $refereeId);
+                        }
                         echo "Registered";
                     }else{
                         echo "server error";
@@ -58,7 +68,32 @@
 
 
     if(isset($_POST['action']) && $_POST['action'] == 'edit'){
+        // print_r($_POST);
         $name = ($_POST['name']);        
+        $phone = testInput($_POST['phone']);
+        $currentUser = currentUser($conn,$_SESSION['user']);
+        // print_r($conn);
+        if($currentUser){
+            
+            if(strlen($name) > 5 ){
+                
+                $updated = editUser($conn,$name,$phone,$currentUser['id']);
+                // print_r($updated);
+                if($updated){
+                    // $_SESSION['user'] = $email;
+                    echo "changed";
+                }else{
+                    echo "server error";
+                };
+            }else{
+                echo "All field are required";
+            }
+        }else {
+            echo "server error here";
+        }
+    };
+
+    if(isset($_POST['action']) && $_POST['action'] == 'updatePassword'){    
         $oldPassword = testInput($_POST['oldPassword']);
         $password = testInput($_POST['password1']);
         $conf_pass = ($_POST['password2']);
@@ -70,11 +105,9 @@
         }        
         $hashPwd = password_hash($password,PASSWORD_DEFAULT);
         if($currentUser){
-            
-            if(strlen($name) > 5 ){
                 
                 if(strlen($password) > 5){
-                    $updated = editUser($conn,$name,$hashPwd,$currentUser['id']);
+                    $updated = changePassword($conn,$hashPwd,$currentUser['id']);
                     // print_r($currentUser);
                     if($updated){
                         // $_SESSION['user'] = $email;
@@ -85,6 +118,29 @@
                 }else{
                     echo "Password too short";
                 }
+        }else {
+            echo "server error here";
+        }
+    };
+
+    if(isset($_POST['action']) && $_POST['action'] == 'add_bank_details'){
+        // print_r($_POST);
+        $bank_name = testInput($_POST['bank_name']);
+        $account_number = testInput($_POST['account_number']);
+        $account_name = testInput($_POST['account_name']);
+        $currentUser = currentUser($conn,$_SESSION['user']);
+        $id = $currentUser['id'];
+        if($currentUser){
+            
+            if(!empty($bank_name) || !empty($account_number) || !empty($account_name) ){
+                    $updated = updateAccount($conn, $bank_name, $account_name, $account_number, $id);
+                    // print_r($currentUser);
+                    if($updated){
+                        // $_SESSION['user'] = $email;
+                        echo "changed";
+                    }else{
+                        echo "server error";
+                    };
             }else{
                 echo "All field are required";
             }

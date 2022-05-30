@@ -13,7 +13,14 @@
 
         <li class="treeview">
           <a href="../users/?p=investment">
-           <i class="fa fa-wallet"></i>  <span class="text-orange-600" style="font-family: verdana; font-size: 13px; font-weight: normal;">INVESTMENTS</span>
+           <i class="fa fa-money"></i>  <span class="text-orange-600" style="font-family: verdana; font-size: 13px; font-weight: normal;">INVESTMENTS</span>
+           
+          </a>
+          
+        </li> 
+        <li class="treeview">
+          <a href="../users/?p=transactions">
+           <i class="fa fa-user"></i>  <span class="text-orange-600" style="font-family: verdana; font-size: 13px; font-weight: normal;">TRANSACTIONS</span>
            
           </a>
           
@@ -25,7 +32,7 @@
           </a>
           
         </li> 
-        <li class="treeview">
+        <!-- <li class="treeview">
           <a href="../users/?p=edit">
            <i class="fa fa-cog"></i>  <span class="text-orange-600" style="font-family: verdana; font-size: 13px; font-weight: normal;">SETTINGS</span>
            <span class="pull-right-container">
@@ -35,7 +42,22 @@
           <ul class="treeview-menu">
             <li style="font-family: verdana; font-size: 14px; font-weight: normal;"><a href="?p=customers" style="font-size: 13px;"><i class="fa fa-circle-o"></i>Edit account</a></li>
           </ul>
-        </li> 
+        </li>  -->
+        <li class="treeview">
+        <a href="#">
+          <i class="fas fa-user-cog"></i> <span class="text-orange-600" style="font-family: verdana; font-size: 13px; font-weight: normal;">&nbsp; SETTINGS</span>
+          <span class="pull-right-container">
+            <i class="fa fa-angle-right pull-right"></i>
+          </span>
+        </a>
+        <ul class="treeview-menu">
+          <li style="font-family: verdana; font-size: 14px; font-weight: normal;"><a href="?p=profile" style="font-size: 13px;"><i class="fa fa-circle-o"></i>Profile</a></li>
+          <li style="font-family: verdana; font-size: 14px; font-weight: normal;"><a href="?p=bank_details" style="font-size: 13px;"><i class="fa fa-circle-o"></i>Account</a></li>
+          <li style="font-family: verdana; font-size: 14px; font-weight: normal;"><a href="?p=password" style="font-size: 13px;"><i class="fa fa-circle-o"></i>Password</a></li>
+          <!-- <li style="font-family: verdana; font-size: 14px; font-weight: normal;"><a href="?p=disapproved" style="font-size: 13px;"><i class="fa fa-circle-o"></i>Disapproved</a></li> -->
+
+        </ul>
+      </li>
         <li class="treeview">
           <a href="logout.php">
             <i class="fa fa-laptop"></i>  <span class="text-orange-600" style="font-family: verdana; font-size: 13px; font-weight: normal;">LOGOUT</span>

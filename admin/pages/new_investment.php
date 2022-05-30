@@ -27,7 +27,7 @@ $users = allActiveUsers($conn);
 
   </section>
   <!-- Main content -->
-  <section class="content text-bold display-5"  style="margin-top: 0px; padding-top: 0px; ">
+  <section class="content text-bold display-5" style="margin-top: 0px; padding-top: 0px; ">
     <!-- Small boxes (Stat box) -->
     <div class="row">
       <div class="col-md-9 col-xs-12" style="background-color: #fff; margin-left: 10px; border:solid; border-width: thin; border-color: #ddd;">
@@ -65,8 +65,8 @@ $users = allActiveUsers($conn);
                   <label for="">Rate</label>
                   <input type="number" name="rate" value="30" required="required" class="form-control">
                 </div>
-                
-                
+
+
                 <button type="submit" name="submit" id="newInvestBtn" class="btn btn-info">Add Investment</button>
               </div>
             </div>
@@ -114,7 +114,7 @@ $users = allActiveUsers($conn);
 
   })
 
-  
+
   $("#newInvestBtn").click((e) => {
     if ($("#invest_form")[0].checkValidity()) {
       e.preventDefault();
@@ -132,7 +132,7 @@ $users = allActiveUsers($conn);
               title: 'Success',
               icon: "success",
               text: 'Investment Added Successfully'
-            }).then(()=>{
+            }).then(() => {
               location.reload()
             })
             $('#newInvestBtn').val('Add Investment')
